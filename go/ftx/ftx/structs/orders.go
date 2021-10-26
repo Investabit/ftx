@@ -2,19 +2,21 @@ package structs
 
 import (
 	"time"
+
+	null "github.com/guregu/null"
 )
 
 type NewOrder struct {
-	Market                  string  `json:"market"`
-	Side                    string  `json:"side"`
-	Price                   float64 `json:"price"`
-	Type                    string  `json:"type"`
-	Size                    float64 `json:"size"`
-	ReduceOnly              bool    `json:"reduceOnly"`
-	Ioc                     bool    `json:"ioc"`
-	PostOnly                bool    `json:"postOnly"`
-	ExternalReferralProgram string  `json:"externalReferralProgram"`
-	// ClientID                string  `json:"clientId"`
+	Market                  string      `json:"market"`
+	Side                    string      `json:"side"`
+	Price                   null.Float  `json:"price"`
+	Type                    string      `json:"type"`
+	Size                    float64     `json:"size"`
+	ReduceOnly              bool        `json:"reduceOnly"`
+	Ioc                     bool        `json:"ioc"`
+	PostOnly                bool        `json:"postOnly"`
+	ExternalReferralProgram string      `json:"externalReferralProgram"`
+	ClientID                null.String `json:"clientId"`
 }
 
 type NewOrderResponse struct {

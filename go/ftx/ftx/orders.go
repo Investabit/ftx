@@ -9,18 +9,8 @@ import (
 	"strings"
 )
 
-type NewOrder structs.NewOrder
-type NewOrderResponse structs.NewOrderResponse
-type OpenOrders structs.OpenOrders
-type OrderHistory structs.OrderHistory
-type NewTriggerOrder structs.NewTriggerOrder
-type NewTriggerOrderResponse structs.NewTriggerOrderResponse
-type OpenTriggerOrders structs.OpenTriggerOrders
-type TriggerOrderHistory structs.TriggerOrderHistory
-type Triggers structs.Triggers
-
-func (client *FtxClient) GetOpenOrders(market string) (OpenOrders, *http.Response, error) {
-	var openOrders OpenOrders
+func (client *FtxClient) GetOpenOrders(market string) (structs.OpenOrders, *http.Response, error) {
+	var openOrders structs.OpenOrders
 	resp, err := client._get("orders?market="+market, []byte(""))
 	if err != nil {
 		// log.Printf("Error GetOpenOrders", err)
@@ -30,8 +20,8 @@ func (client *FtxClient) GetOpenOrders(market string) (OpenOrders, *http.Respons
 	return openOrders, resp, err
 }
 
-func (client *FtxClient) GetOrderHistory(market string, startTime float64, endTime float64, limit int64) (OrderHistory, *http.Response, error) {
-	var orderHistory OrderHistory
+func (client *FtxClient) GetOrderHistory(market string, startTime float64, endTime float64, limit int64) (structs.OrderHistory, *http.Response, error) {
+	var orderHistory structs.OrderHistory
 	requestBody, err := json.Marshal(map[string]interface{}{
 		"market":     market,
 		"start_time": startTime,
@@ -51,8 +41,8 @@ func (client *FtxClient) GetOrderHistory(market string, startTime float64, endTi
 	return orderHistory, resp, err
 }
 
-func (client *FtxClient) GetOpenTriggerOrders(market string, _type string) (OpenTriggerOrders, error) {
-	var openTriggerOrders OpenTriggerOrders
+func (client *FtxClient) GetOpenTriggerOrders(market string, _type string) (structs.OpenTriggerOrders, error) {
+	var openTriggerOrders structs.OpenTriggerOrders
 	requestBody, err := json.Marshal(map[string]string{"market": market, "type": _type})
 	if err != nil {
 		// log.Printf("Error GetOpenTriggerOrders", err)
@@ -67,8 +57,8 @@ func (client *FtxClient) GetOpenTriggerOrders(market string, _type string) (Open
 	return openTriggerOrders, err
 }
 
-func (client *FtxClient) GetTriggers(orderId string) (Triggers, error) {
-	var trigger Triggers
+func (client *FtxClient) GetTriggers(orderId string) (structs.Triggers, error) {
+	var trigger structs.Triggers
 	resp, err := client._get("conditional_orders/"+orderId+"/triggers", []byte(""))
 	if err != nil {
 		// log.Printf("Error GetTriggers", err)
@@ -78,8 +68,8 @@ func (client *FtxClient) GetTriggers(orderId string) (Triggers, error) {
 	return trigger, err
 }
 
-func (client *FtxClient) GetTriggerOrdersHistory(market string, startTime float64, endTime float64, limit int64) (TriggerOrderHistory, error) {
-	var triggerOrderHistory TriggerOrderHistory
+func (client *FtxClient) GetTriggerOrdersHistory(market string, startTime float64, endTime float64, limit int64) (structs.TriggerOrderHistory, error) {
+	var triggerOrderHistory structs.TriggerOrderHistory
 	requestBody, err := json.Marshal(map[string]interface{}{
 		"market":     market,
 		"start_time": startTime,
@@ -98,18 +88,9 @@ func (client *FtxClient) GetTriggerOrdersHistory(market string, startTime float6
 	return triggerOrderHistory, err
 }
 
-func (client *FtxClient) PlaceOrder(market string, side string, price float64,
-	_type string, size float64, reduceOnly bool, ioc bool, postOnly bool) (NewOrderResponse, *http.Response, error) {
-	var newOrderResponse NewOrderResponse
-	requestBody, err := json.Marshal(NewOrder{
-		Market:     market,
-		Side:       side,
-		Price:      price,
-		Type:       _type,
-		Size:       size,
-		ReduceOnly: reduceOnly,
-		Ioc:        ioc,
-		PostOnly:   postOnly})
+func (client *FtxClient) PlaceOrder(newOrder structs.NewOrder) (structs.NewOrderResponse, *http.Response, error) {
+	var newOrderResponse structs.NewOrderResponse
+	requestBody, err := json.Marshal(newOrder)
 	if err != nil {
 		// log.Printf("Error PlaceOrder", err)
 		return newOrderResponse, nil, err
@@ -125,15 +106,15 @@ func (client *FtxClient) PlaceOrder(market string, side string, price float64,
 
 func (client *FtxClient) PlaceTriggerOrder(market string, side string, size float64,
 	_type string, reduceOnly bool, retryUntilFilled bool, triggerPrice float64,
-	orderPrice float64, trailValue float64) (NewTriggerOrderResponse, error) {
+	orderPrice float64, trailValue float64) (structs.NewTriggerOrderResponse, error) {
 
-	var newTriggerOrderResponse NewTriggerOrderResponse
-	var newTriggerOrder NewTriggerOrder
+	var newTriggerOrderResponse structs.NewTriggerOrderResponse
+	var newTriggerOrder structs.NewTriggerOrder
 
 	switch _type {
 	case "stop":
 		if orderPrice != 0 {
-			newTriggerOrder = NewTriggerOrder{
+			newTriggerOrder = structs.NewTriggerOrder{
 				Market:       market,
 				Side:         side,
 				TriggerPrice: triggerPrice,
@@ -143,7 +124,7 @@ func (client *FtxClient) PlaceTriggerOrder(market string, side string, size floa
 				OrderPrice:   orderPrice,
 			}
 		} else {
-			newTriggerOrder = NewTriggerOrder{
+			newTriggerOrder = structs.NewTriggerOrder{
 				Market:       market,
 				Side:         side,
 				TriggerPrice: triggerPrice,
@@ -153,7 +134,7 @@ func (client *FtxClient) PlaceTriggerOrder(market string, side string, size floa
 			}
 		}
 	case "trailingStop":
-		newTriggerOrder = NewTriggerOrder{
+		newTriggerOrder = structs.NewTriggerOrder{
 			Market:     market,
 			Side:       side,
 			Type:       _type,
@@ -162,7 +143,7 @@ func (client *FtxClient) PlaceTriggerOrder(market string, side string, size floa
 			TrailValue: trailValue,
 		}
 	case "takeProfit":
-		newTriggerOrder = NewTriggerOrder{
+		newTriggerOrder = structs.NewTriggerOrder{
 			Market:       market,
 			Side:         side,
 			TriggerPrice: triggerPrice,
@@ -188,8 +169,8 @@ func (client *FtxClient) PlaceTriggerOrder(market string, side string, size floa
 	return newTriggerOrderResponse, err
 }
 
-func (client *FtxClient) ModifyOrder(orderId int64, modifyOrderData structs.ModifyOrder) (NewOrderResponse, *http.Response, error) {
-	var postResponse NewOrderResponse
+func (client *FtxClient) ModifyOrder(orderId int64, modifyOrderData structs.ModifyOrder) (structs.NewOrderResponse, *http.Response, error) {
+	var postResponse structs.NewOrderResponse
 	id := strconv.FormatInt(orderId, 10)
 	requestBody, err := json.Marshal(modifyOrderData)
 	if err != nil {
@@ -276,8 +257,8 @@ func (client *FtxClient) Balances(market string, orderID string) (structs.Balanc
 	return getResponse, resp, err
 }
 
-func (client *FtxClient) GetOrderStatus(orderID string) (NewOrderResponse, *http.Response, error) {
-	var openOrders NewOrderResponse
+func (client *FtxClient) GetOrderStatus(orderID string) (structs.NewOrderResponse, *http.Response, error) {
+	var openOrders structs.NewOrderResponse
 	resp, err := client._get("orders/"+orderID, []byte(""))
 	if err != nil {
 		// log.Printf("Error GetOrderStatus", err)
@@ -287,8 +268,8 @@ func (client *FtxClient) GetOrderStatus(orderID string) (NewOrderResponse, *http
 	return openOrders, resp, err
 }
 
-func (client *FtxClient) GetClientOrderStatus(clOrderID string) (NewOrderResponse, *http.Response, error) {
-	var openOrders NewOrderResponse
+func (client *FtxClient) GetClientOrderStatus(clOrderID string) (structs.NewOrderResponse, *http.Response, error) {
+	var openOrders structs.NewOrderResponse
 	resp, err := client._get("orders/by_client_id/"+clOrderID, []byte(""))
 	if err != nil {
 		// log.Printf("Error GetOrderStatus", err)
