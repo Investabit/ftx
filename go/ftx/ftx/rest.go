@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"io/ioutil"
-	"log"
+	// "log"
 	"net/http"
 	"strconv"
 	"time"
@@ -49,12 +49,12 @@ func _processResponse(resp *http.Response, result interface{}) error {
 	defer resp.Body.Close()
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		log.Printf("Error processing response:", err)
+		// log.Printf("Error processing response:", err)
 		return err
 	}
 	err = json.Unmarshal(body, result)
 	if err != nil {
-		log.Printf("Error processing response:", err)
+		// log.Printf("Error processing response:", err)
 		return err
 	}
 	return nil

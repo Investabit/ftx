@@ -114,3 +114,52 @@ type Triggers struct {
 		Time       time.Time `json:"time"`
 	} `json:"result"`
 }
+
+type ModifyOrder struct {
+	Price    float64 `json:"price,omitempty"`
+	Size     float64 `json:"size,omitempty"`
+	ClientID string  `json:"client_id,omitempty"`
+}
+
+type OrderFill struct {
+	Fee           float64     `json:"fee"`
+	FeeCurrency   string      `json:"feeCurrency"`
+	FeeRate       float64     `json:"feeRate"`
+	Future        string      `json:"future"`
+	ID            int         `json:"id"`
+	Liquidity     string      `json:"liquidity"`
+	Market        string      `json:"market"`
+	BaseCurrency  interface{} `json:"baseCurrency"`
+	QuoteCurrency interface{} `json:"quoteCurrency"`
+	OrderID       int         `json:"orderId"`
+	TradeID       int         `json:"tradeId"`
+	Price         float64     `json:"price"`
+	Side          string      `json:"side"`
+	Size          int         `json:"size"`
+	Time          time.Time   `json:"time"`
+	Type          string      `json:"type"`
+}
+
+type FillsResponse struct {
+	Success bool        `json:"success"`
+	Result  []OrderFill `json:"result"`
+}
+
+type Balance struct {
+	Coin                   string  `json:"coin"`
+	Free                   float64 `json:"free"`
+	SpotBorrow             float64 `json:"spotBorrow"`
+	Total                  float64 `json:"total"`
+	UsdValue               float64 `json:"usdValue"`
+	AvailableWithoutBorrow float64 `json:"availableWithoutBorrow"`
+}
+
+type BalancesResponse struct {
+	Success bool      `json:"success"`
+	Result  []Balance `json:"result"`
+}
+
+type CancelResponse struct {
+	Success bool   `json:"success"`
+	Result  string `json:"result"`
+}

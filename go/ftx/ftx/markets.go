@@ -1,8 +1,8 @@
 package ftx
 
 import (
-	"./structs"
-	"log"
+	"github.com/Investabit/ftx/go/ftx/ftx/structs"
+	// "log"
 	"strconv"
 )
 
@@ -20,7 +20,7 @@ func (client *FtxClient) GetHistoricalPrices(market string, resolution int64,
 			"&end_time="+strconv.FormatInt(endTime, 10),
 		[]byte(""))
 	if err != nil {
-		log.Printf("Error GetHistoricalPrices", err)
+		// log.Printf("Error GetHistoricalPrices", err)
 		return historicalPrices, err
 	}
 	err = _processResponse(resp, &historicalPrices)
@@ -36,7 +36,7 @@ func (client *FtxClient) GetTrades(market string, limit int64, startTime int64, 
 			"&end_time="+strconv.FormatInt(endTime, 10),
 		[]byte(""))
 	if err != nil {
-		log.Printf("Error GetTrades", err)
+		// log.Printf("Error GetTrades", err)
 		return trades, err
 	}
 	err = _processResponse(resp, &trades)
