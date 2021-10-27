@@ -246,7 +246,7 @@ func (client *FtxClient) Fills(market string, orderID string) (structs.FillsResp
 
 // GET /wallet/balances
 // BalancesResponse
-func (client *FtxClient) Balances(market string, orderID string) (structs.BalancesResponse, *http.Response, error) {
+func (client *FtxClient) Balances() (structs.BalancesResponse, *http.Response, error) {
 	var getResponse structs.BalancesResponse
 	resp, err := client._get("wallet/balances", []byte(""))
 	if err != nil {
