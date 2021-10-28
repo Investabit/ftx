@@ -6,6 +6,13 @@ import (
 	null "github.com/guregu/null"
 )
 
+type OrderHistoryRequest struct {
+	Market    null.String `json:"market,omitempty"`
+	StartTime null.Float  `json:"start_time,omitempty"`
+	EndTime   null.Float  `json:"end_time,omitempty"`
+	Limit     null.Int    `json:"limit,omitempty"`
+}
+
 type NewOrder struct {
 	Market                  string      `json:"market"`
 	Side                    string      `json:"side"`

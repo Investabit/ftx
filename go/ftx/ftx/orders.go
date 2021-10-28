@@ -20,19 +20,18 @@ func (client *FtxClient) GetOpenOrders(market string) (structs.OpenOrders, *http
 	return openOrders, resp, err
 }
 
-func (client *FtxClient) GetOrderHistory(market string, startTime float64, endTime float64, limit int64) (structs.OrderHistory, *http.Response, error) {
+func (client *FtxClient) GetOrderHistory(orderHistoryRequest structs.OrderHistoryRequest) (structs.OrderHistory, *http.Response, error) {
 	var orderHistory structs.OrderHistory
-	requestBody, err := json.Marshal(map[string]interface{}{
-		"market":     market,
-		"start_time": startTime,
-		"end_time":   endTime,
-		"limit":      limit,
-	})
+	requestBody, err := json.Marshal(orderHistoryRequest)
 	if err != nil {
 		// log.Printf("Error GetOrderHistory", err)
 		return orderHistory, nil, err
 	}
-	resp, err := client._get("orders/history?market="+market, requestBody)
+	url := "orders/history"
+	if !orderHistoryRequest.Market.IsZero() {
+		url += "?market=" + orderHistoryRequest.Market.ValueOrZero()
+	}
+	resp, err := client._get(url, requestBody)
 	if err != nil {
 		// log.Printf("Error GetOrderHistory", err)
 		return orderHistory, resp, err
