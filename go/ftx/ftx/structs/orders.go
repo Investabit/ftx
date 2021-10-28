@@ -128,16 +128,16 @@ type OrderFill struct {
 	FeeCurrency   string      `json:"feeCurrency"`
 	FeeRate       float64     `json:"feeRate"`
 	Future        string      `json:"future"`
-	ID            int         `json:"id"`
+	ID            int64       `json:"id"`
 	Liquidity     string      `json:"liquidity"`
 	Market        string      `json:"market"`
 	BaseCurrency  interface{} `json:"baseCurrency"`
 	QuoteCurrency interface{} `json:"quoteCurrency"`
-	OrderID       int         `json:"orderId"`
-	TradeID       int         `json:"tradeId"`
+	OrderID       int64       `json:"orderId"`
+	TradeID       int64       `json:"tradeId"`
 	Price         float64     `json:"price"`
 	Side          string      `json:"side"`
-	Size          int         `json:"size"`
+	Size          float64     `json:"size"`
 	Time          time.Time   `json:"time"`
 	Type          string      `json:"type"`
 }
