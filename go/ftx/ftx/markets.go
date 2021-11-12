@@ -2,6 +2,7 @@ package ftx
 
 import (
 	"github.com/Investabit/ftx/go/ftx/ftx/structs"
+	"net/http"
 	// "log"
 	"strconv"
 )
@@ -47,7 +48,7 @@ func (client *FtxClient) GetOrderbook(market string, depth int64) (structs.Order
 	var orderbook structs.Orderbook
 	resp, err := client._get(
 		"markets/"+market+"/orderbook?"+
-			"&depth="+strconv.FormatInt(limit, 10),
+			"&depth="+strconv.FormatInt(depth, 10),
 		[]byte(""))
 	if err != nil {
 		// log.Printf("Error GetTrades", err)
