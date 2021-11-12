@@ -27,3 +27,11 @@ type Trades struct {
 		Time        time.Time `json:"time"`
 	} `json:"result"`
 }
+
+type Orderbook struct {
+	Success bool `json:"success"`
+	Result  struct {
+		Asks [][]float64 `json:"asks"`
+		Bids [][]float64 `json:"bids"`
+	} `json:"result"`
+}

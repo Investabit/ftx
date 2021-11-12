@@ -42,3 +42,17 @@ func (client *FtxClient) GetTrades(market string, limit int64, startTime int64, 
 	err = _processResponse(resp, &trades)
 	return trades, err
 }
+
+func (client *FtxClient) GetOrderbook(market string, depth int64) (structs.Orderbook, *http.Response, error) {
+	var orderbook structs.Orderbook
+	resp, err := client._get(
+		"markets/"+market+"/orderbook?"+
+			"&depth="+strconv.FormatInt(limit, 10),
+		[]byte(""))
+	if err != nil {
+		// log.Printf("Error GetTrades", err)
+		return orderbook, resp, err
+	}
+	err = _processResponse(resp, &orderbook)
+	return orderbook, resp, err
+}
