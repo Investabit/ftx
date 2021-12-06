@@ -1,6 +1,7 @@
 package structs
 
 import (
+	"github.com/guregu/null"
 	"time"
 )
 
@@ -50,8 +51,8 @@ type MarketsResponse struct {
 		Ask                   float64     `json:"ask"`
 		Price                 float64     `json:"price"`
 		Type                  string      `json:"type"`
-		BaseCurrency          interface{} `json:"baseCurrency"`
-		QuoteCurrency         interface{} `json:"quoteCurrency"`
+		BaseCurrency          null.String `json:"baseCurrency"`
+		QuoteCurrency         null.String `json:"quoteCurrency"`
 		Underlying            string      `json:"underlying"`
 		Restricted            bool        `json:"restricted"`
 		HighLeverageFeeExempt bool        `json:"highLeverageFeeExempt"`
