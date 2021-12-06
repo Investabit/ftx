@@ -4,6 +4,7 @@ import (
 	"github.com/Investabit/ftx/go/ftx/ftx/structs"
 	"net/http"
 	// "log"
+	"github.com/guregu/null"
 	"strconv"
 )
 
