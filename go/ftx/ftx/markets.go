@@ -83,7 +83,7 @@ func (client *FtxClient) Futures() (structs.FuturesResponse, *http.Response, err
 
 func (client *FtxClient) FutureStat(future string) (structs.FutureStatsResponse, *http.Response, error) {
 	var future_resp structs.FutureStatsResponse
-	resp, err := client._get("futures/"+future, []byte(""))
+	resp, err := client._get("futures/"+future+"/stats", []byte(""))
 	if err != nil {
 		// log.Printf("Error GetTrades", err)
 		return future_resp, resp, err

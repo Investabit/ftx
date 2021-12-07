@@ -115,26 +115,10 @@ type LendingRatesResponse struct {
 type FutureStatsResponse struct {
 	Success bool `json:"success"`
 	Result  struct {
-		Ask            int       `json:"ask"`
-		Bid            float64   `json:"bid"`
-		Change1H       int       `json:"change1h"`
-		Change24H      int       `json:"change24h"`
-		Description    string    `json:"description"`
-		Enabled        bool      `json:"enabled"`
-		Expired        bool      `json:"expired"`
-		Expiry         time.Time `json:"expiry"`
-		Index          float64   `json:"index"`
-		Last           int       `json:"last"`
-		LowerBound     float64   `json:"lowerBound"`
-		Mark           float64   `json:"mark"`
-		Name           string    `json:"name"`
-		Perpetual      bool      `json:"perpetual"`
-		PostOnly       bool      `json:"postOnly"`
-		PriceIncrement float64   `json:"priceIncrement"`
-		SizeIncrement  float64   `json:"sizeIncrement"`
-		Underlying     string    `json:"underlying"`
-		UpperBound     float64   `json:"upperBound"`
-		Type           string    `json:"type"`
+		Volume          float64   `json:"volume"`
+		NextFundingRate float64   `json:"nextFundingRate"`
+		NextFundingTime time.Time `json:"nextFundingTime"`
+		OpenInterest    float64   `json:"openInterest"`
 	} `json:"result"`
 }
 
