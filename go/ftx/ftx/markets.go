@@ -126,7 +126,7 @@ func (client *FtxClient) LendingHistory(startTime null.Int, endTime null.Int) (s
 	return lendingRateHistory, resp, err
 }
 
-func (client *FtxClient) HistoricalPrices(market string, resolution int64, startTime null.Int, endTime null.Int) (structs.HistoricalPricesResponse, *http.Response, error) {
+func (client *FtxClient) HistoricalPrices(market string, resolution string, startTime null.Int, endTime null.Int) (structs.HistoricalPricesResponse, *http.Response, error) {
 	var historyPrice structs.HistoricalPricesResponse
 	params := ""
 	if !startTime.IsZero() {
@@ -136,7 +136,7 @@ func (client *FtxClient) HistoricalPrices(market string, resolution int64, start
 		params += "&end_time=" + strconv.FormatInt(endTime.ValueOrZero(), 10)
 	}
 	resp, err := client._get("markets/"+market+"/candles?resolution="+
-		strconv.FormatInt(resolution, 10)+params, []byte(""))
+		resolution+params, []byte(""))
 	if err != nil {
 		// log.Printf("Error GetTrades", err)
 		return historyPrice, resp, err
