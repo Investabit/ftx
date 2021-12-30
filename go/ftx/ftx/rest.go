@@ -13,16 +13,19 @@ import (
 const URL = "https://ftx.com/api/"
 
 func (client *FtxClient) signRequest(method string, path string, body []byte) *http.Request {
-	ts := strconv.FormatInt(time.Now().UTC().Unix()*1000, 10)
-	signaturePayload := ts + method + "/api/" + path + string(body)
-	signature := client.sign(signaturePayload)
 	req, _ := http.NewRequest(method, URL+path, bytes.NewBuffer(body))
 	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("FTX-KEY", client.Api)
-	req.Header.Set("FTX-SIGN", signature)
-	req.Header.Set("FTX-TS", ts)
-	if client.Subaccount != "" {
-		req.Header.Set("FTX-SUBACCOUNT", client.Subaccount)
+	if len(client.Api) == 0 || len(client.Secret) == 0 {
+		ts := strconv.FormatInt(time.Now().UTC().Unix()*1000, 10)
+		signaturePayload := ts + method + "/api/" + path + string(body)
+		signature := client.sign(signaturePayload)
+
+		req.Header.Set("FTX-KEY", client.Api)
+		req.Header.Set("FTX-SIGN", signature)
+		req.Header.Set("FTX-TS", ts)
+		if client.Subaccount != "" {
+			req.Header.Set("FTX-SUBACCOUNT", client.Subaccount)
+		}
 	}
 	return req
 }
