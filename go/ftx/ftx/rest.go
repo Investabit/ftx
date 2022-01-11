@@ -59,8 +59,8 @@ func _processResponse(resp *http.Response, result interface{}) error {
 		return err
 	}
 
-	result := gjson.GetBytes(body, "success")
-	if !result.Bool() {
+	resultParsing := gjson.GetBytes(body, "success")
+	if !resultParsing.Bool() {
 		resErr := gjson.GetBytes(body, "error")
 		resStr := resErr.String()
 		if resStr == "" {
