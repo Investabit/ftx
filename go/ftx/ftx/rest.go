@@ -63,7 +63,7 @@ func _processResponse(resp *http.Response, result interface{}) error {
 	if !resultParsing.Bool() {
 		resErr := gjson.GetBytes(body, "error")
 		resStr := resErr.String()
-		if resStr == "" {
+		if resStr != "" {
 			return errors.New(resStr)
 		}
 	}
