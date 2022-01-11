@@ -3,11 +3,14 @@ package ftx
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"io/ioutil"
 	// "log"
 	"net/http"
 	"strconv"
 	"time"
+
+	"github.com/tidwall/gjson"
 )
 
 const URL = "https://ftx.com/api/"
@@ -55,10 +58,21 @@ func _processResponse(resp *http.Response, result interface{}) error {
 		// log.Printf("Error processing response:", err)
 		return err
 	}
+
+	result := gjson.GetBytes(body, "success")
+	if !result.Bool() {
+		resErr := gjson.GetBytes(body, "error")
+		resStr := resErr.String()
+		if resStr == "" {
+			return errors.New(resStr)
+		}
+	}
+
 	err = json.Unmarshal(body, result)
 	if err != nil {
 		// log.Printf("Error processing response:", err)
 		return err
 	}
+
 	return nil
 }
